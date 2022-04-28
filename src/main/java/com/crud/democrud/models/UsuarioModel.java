@@ -1,6 +1,7 @@
 package com.crud.democrud.models;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "usuario")
@@ -11,8 +12,13 @@ public class UsuarioModel {
     @Column(unique = true, nullable = false)
     private Long id;
 
+    @Column(name = "NOMBRE", length = 50, nullable = false)
     private String nombre;
+
+    @Column(name = "EMAIL", length = 50, nullable = false)
     private String email;
+
+    @Column(name = "PRIORIDAD", length = 50, nullable = false)
     private Integer prioridad;
 
     public void setPrioridad(Integer prioridad) {

@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/crud?useSSL=false&serverTimezone=UTC&useLegacyDateTimeCode=false
+    username: root
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
