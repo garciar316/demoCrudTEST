@@ -1,17 +1,14 @@
 package com.crud.democrud.services;
 
 import com.crud.democrud.models.Rol;
-import com.crud.democrud.models.UsuarioModel;
+import com.crud.democrud.models.Usuario;
 import com.crud.democrud.models.UsuarioRol;
 import com.crud.democrud.repositories.UsuarioRepository;
 import com.crud.democrud.repositories.UsuarioRolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,33 +22,28 @@ public class UsuarioService {
         this.usuarioRolRepository = usuarioRolRepository;
     }
 
-    public List<UsuarioModel> obtenerUsuarios(){
-        return (ArrayList<UsuarioModel>) usuarioRepository.findAll();
+    public List<Usuario> obtenerUsuarios(){
+        return usuarioRepository.findAll();
     }
 
-    public UsuarioModel guardarUsuario(UsuarioModel usuario){
+    public Usuario guardarUsuario(Usuario usuario){
         return usuarioRepository.save(usuario);
     }
 
-    public Optional<UsuarioModel> obtenerPorId(Long id){
-        return usuarioRepository.findById(id);
+    public Usuario obtenerPorId(Long id){
+        return usuarioRepository.findById(id).orElseThrow();
     }
 
 
-    public List<UsuarioModel>  obtenerPorPrioridad(Integer prioridad) {
+    public List<Usuario>  obtenerPorPrioridad(Integer prioridad) {
         return usuarioRepository.findByPrioridad(prioridad);
     }
 
-    public boolean eliminarUsuario(Long id) {
-        try{
-            usuarioRepository.deleteById(id);
-            return true;
-        }catch(Exception err){
-            return false;
-        }
+    public void eliminarUsuario(Long id) {
+        usuarioRepository.deleteById(id);
     }
 
-    public UsuarioModel actualizarUsuario(UsuarioModel usuario) {
+    public Usuario actualizarUsuario(Usuario usuario) {
         if (!usuarioRepository.existsById(usuario.getId())) {
             return null;
         }
@@ -59,7 +51,7 @@ public class UsuarioService {
     }
 
     public List<Rol> obtenerRoles(Long id) {
-        UsuarioModel usuario = obtenerPorId(id).get();
+        Usuario usuario = obtenerPorId(id);
         return usuarioRolRepository.findAllByUsuario(usuario)
                 .stream().map(UsuarioRol::getRol).collect(Collectors.toList());
     }

@@ -1,8 +1,7 @@
 package com.crud.democrud.ServicesTest;
 
-import com.crud.democrud.models.UsuarioModel;
+import com.crud.democrud.models.Usuario;
 import com.crud.democrud.repositories.UsuarioRepository;
-import com.crud.democrud.services.UsuarioService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -22,21 +21,21 @@ public class UsuarioServiceTest {
 
     @Test
     public void testGuardarUsuario(){
-        UsuarioModel usuarioModel=new UsuarioModel("aquaman","aqua@gmail.com",99);
-        UsuarioModel usuarioModelRegistrado = usuarioRepository.save(usuarioModel);
-        assertNotNull(usuarioModelRegistrado);
+        Usuario usuario =new Usuario("aquaman","aqua@gmail.com",99);
+        Usuario usuarioRegistrado = usuarioRepository.save(usuario);
+        assertNotNull(usuarioRegistrado);
     }
 
     @Test
     public void testBuscarUsuarioPorId(){
         Long idBuscado=1L;
-        Optional<UsuarioModel> usuarioModelBuscado=usuarioRepository.findById(idBuscado);
+        Optional<Usuario> usuarioModelBuscado=usuarioRepository.findById(idBuscado);
         assertThat(usuarioModelBuscado.get().getId()).isEqualTo(idBuscado);
     }
 
     @Test
     public void testListarUsuarios(){
-        List<UsuarioModel> usuarioModelList=(List<UsuarioModel>) usuarioRepository.findAll();
-        assertThat(usuarioModelList).size().isGreaterThan(0);
+        List<Usuario> usuarioList =(List<Usuario>) usuarioRepository.findAll();
+        assertThat(usuarioList).size().isGreaterThan(0);
     }
 }

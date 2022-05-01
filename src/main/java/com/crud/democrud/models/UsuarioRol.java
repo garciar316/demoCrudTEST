@@ -1,9 +1,18 @@
 package com.crud.democrud.models;
 
+import lombok.*;
+import org.hibernate.Hibernate;
+
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "USUARIO_ROL")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class UsuarioRol {
 
     @Id
@@ -16,29 +25,18 @@ public class UsuarioRol {
 
     @ManyToOne
     @JoinColumn(name = "ID_USUARIO")
-    private UsuarioModel usuario;
+    private Usuario usuario;
 
-    public UsuarioRol() {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        UsuarioRol that = (UsuarioRol) o;
+        return id != null && Objects.equals(id, that.id);
     }
 
-    public UsuarioRol(Rol rol, UsuarioModel usuario) {
-        this.rol = rol;
-        this.usuario = usuario;
-    }
-
-    public Rol getRol() {
-        return rol;
-    }
-
-    public void setRol(Rol rol) {
-        this.rol = rol;
-    }
-
-    public UsuarioModel getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(UsuarioModel usuario) {
-        this.usuario = usuario;
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

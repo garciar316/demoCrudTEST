@@ -1,13 +1,15 @@
 package com.crud.democrud.controllers;
 
 import com.crud.democrud.models.Rol;
-import com.crud.democrud.models.UsuarioModel;
+import com.crud.democrud.models.Usuario;
 import com.crud.democrud.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 @CrossOrigin
 @RestController
@@ -22,42 +24,75 @@ public class UsuarioController {
     }
 
     @GetMapping()
-    public List<UsuarioModel> obtenerUsuarios() {
-        return usuarioService.obtenerUsuarios();
+    public List<Usuario> obtenerUsuarios() {
+        try {
+            return usuarioService.obtenerUsuarios();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
     }
 
     @PostMapping()
-    public UsuarioModel guardarUsuario(@RequestBody UsuarioModel usuario) {
-        return this.usuarioService.guardarUsuario(usuario);
+    public ResponseEntity<Usuario> guardarUsuario(@RequestBody Usuario usuario) {
+        try {
+            return ResponseEntity.ok(this.usuarioService.guardarUsuario(usuario));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+
     }
 
     @GetMapping(path = "/{id}")
-    public Optional<UsuarioModel> obtenerUsuarioPorId(@PathVariable("id") Long id) {
-        return this.usuarioService.obtenerPorId(id);
+    public ResponseEntity<Usuario> obtenerUsuarioPorId(@PathVariable("id") Long id) {
+        try {
+            return ResponseEntity.ok(this.usuarioService.obtenerPorId(id));
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/query")
-    public List<UsuarioModel> obtenerUsuarioPorPrioridad(@RequestParam("prioridad") Integer prioridad) {
-        return this.usuarioService.obtenerPorPrioridad(prioridad);
+    public List<Usuario> obtenerUsuariosPorPrioridad(@RequestParam("prioridad") Integer prioridad) {
+        try {
+            return this.usuarioService.obtenerPorPrioridad(prioridad);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
     }
 
     @DeleteMapping("/{id}")
-    public String eliminarPorId(@PathVariable("id") Long id) {
-        boolean ok = this.usuarioService.eliminarUsuario(id);
-        if (ok) {
-            return "Se eliminó el usuario con id " + id;
-        } else {
-            return "No pudo eliminar el usuario con id" + id;
+    public ResponseEntity<String> eliminarPorId(@PathVariable("id") Long id) {
+        try {
+            usuarioService.eliminarUsuario(id);
+            return ResponseEntity.ok("Se elimino correctamente");
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
         }
     }
 
     @PutMapping("/update")
-    public UsuarioModel actualizarUsuario(@RequestBody UsuarioModel usuario) {
-        return usuarioService.actualizarUsuario(usuario);
+    public ResponseEntity<Usuario> actualizarUsuario(@RequestBody Usuario usuario) {
+        try {
+            return ResponseEntity.ok(usuarioService.actualizarUsuario(usuario));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+
     }
 
     @GetMapping("/roles/{id}")
     public List<Rol> obtenerRoles(@PathVariable("id") Long id) {
-        return usuarioService.obtenerRoles(id);
+        try {
+            return usuarioService.obtenerRoles(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
     }
 }

@@ -1,7 +1,7 @@
 package com.crud.democrud.services;
 
 import com.crud.democrud.models.Rol;
-import com.crud.democrud.models.UsuarioModel;
+import com.crud.democrud.models.Usuario;
 import com.crud.democrud.models.UsuarioRol;
 import com.crud.democrud.repositories.RolRepository;
 import com.crud.democrud.repositories.UsuarioRolRepository;
@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,25 +23,20 @@ public class RolService {
         this.usuarioRolRepository = usuarioRolRepository;
     }
 
-    public Optional<Rol> obtenerPorId(Long id) {
-        return rolRepository.findById(id);
+    public Rol obtenerPorId(Long id) {
+        return rolRepository.findById(id).orElseThrow();
     }
 
     public List<Rol> obtenerTodos() {
-        return (List<Rol>) rolRepository.findAll();
+        return rolRepository.findAll();
     }
 
     public Rol save(Rol rol) {
         return rolRepository.save(rol);
     }
 
-    public boolean eliminarRol(Long id) {
-        try{
+    public void eliminarRol(Long id) {
             rolRepository.deleteById(id);
-            return true;
-        }catch(Exception err){
-            return false;
-        }
     }
 
     public Rol actualizarUsuario(Rol rol) {
@@ -52,8 +46,8 @@ public class RolService {
         return rolRepository.save(rol);
     }
 
-    public List<UsuarioModel> obtenerUsuarios(Long id) {
-        Rol rol = obtenerPorId(id).orElse(null);
+    public List<Usuario> obtenerUsuarios(Long id) {
+        Rol rol = obtenerPorId(id);
         return usuarioRolRepository.findAllByRol(rol)
                 .stream().map(UsuarioRol::getUsuario).collect(Collectors.toList());
     }

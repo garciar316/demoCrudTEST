@@ -7,27 +7,34 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "ROL")
+@Table(name = "usuario")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Rol {
+public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idRol;
+    @Column(unique = true, nullable = false)
+    private Long id;
 
-    @Column(name = "DESCRIPCION", length = 50, nullable = false)
-    private String descripcion;
+    @Column(name = "NOMBRE", length = 50, nullable = false)
+    private String nombre;
+
+    @Column(name = "EMAIL", length = 50, nullable = false)
+    private String email;
+
+    @Column(name = "PRIORIDAD", length = 50, nullable = false)
+    private Integer prioridad;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Rol rol = (Rol) o;
-        return idRol != null && Objects.equals(idRol, rol.idRol);
+        Usuario that = (Usuario) o;
+        return id != null && Objects.equals(id, that.id);
     }
 
     @Override
