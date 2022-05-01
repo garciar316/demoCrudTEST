@@ -30,7 +30,6 @@ public class RolController {
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }
-
     }
 
     @GetMapping
@@ -44,7 +43,7 @@ public class RolController {
     }
 
     @PostMapping
-    public ResponseEntity<Rol> guardar(@RequestBody Rol rol) {
+    public ResponseEntity<Rol> guardarRol(@RequestBody Rol rol) {
         try {
             return ResponseEntity.ok(rolService.save(rol));
         } catch (Exception e) {

@@ -7,6 +7,7 @@ import com.crud.democrud.repositories.UsuarioRepository;
 import com.crud.democrud.repositories.UsuarioRolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,27 +23,33 @@ public class UsuarioService {
         this.usuarioRolRepository = usuarioRolRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<Usuario> obtenerUsuarios(){
         return usuarioRepository.findAll();
     }
 
+    @Transactional
     public Usuario guardarUsuario(Usuario usuario){
         return usuarioRepository.save(usuario);
     }
 
+    @Transactional(readOnly = true)
     public Usuario obtenerPorId(Long id){
         return usuarioRepository.findById(id).orElseThrow();
     }
 
 
+    @Transactional(readOnly = true)
     public List<Usuario>  obtenerPorPrioridad(Integer prioridad) {
         return usuarioRepository.findByPrioridad(prioridad);
     }
 
+    @Transactional
     public void eliminarUsuario(Long id) {
         usuarioRepository.deleteById(id);
     }
 
+    @Transactional
     public Usuario actualizarUsuario(Usuario usuario) {
         if (!usuarioRepository.existsById(usuario.getId())) {
             return null;
@@ -50,6 +57,7 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
+    @Transactional(readOnly = true)
     public List<Rol> obtenerRoles(Long id) {
         Usuario usuario = obtenerPorId(id);
         return usuarioRolRepository.findAllByUsuario(usuario)

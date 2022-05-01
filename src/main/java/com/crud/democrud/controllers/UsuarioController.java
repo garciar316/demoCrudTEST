@@ -83,7 +83,6 @@ public class UsuarioController {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
-
     }
 
     @GetMapping("/roles/{id}")
